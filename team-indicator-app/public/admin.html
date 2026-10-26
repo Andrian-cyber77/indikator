@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Pengaturan Indikator Tim</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Top Navbar -->
+  <header class="sticky top-0 z-30 px-4 sm:px-8 py-3.5 border-b border-slate-800/80 glass-panel">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <i data-lucide="sliders" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+            <span>Panel Kontrol Admin</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium">ADMIN</span>
+          </h1>
+          <p class="text-xs text-slate-400">Kelola dan atur kode indikator warna untuk seluruh tim</p>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Preview Viewer Page Button -->
+        <a 
+          href="/indicator.html" 
+          target="_blank"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/70 text-slate-300 text-xs font-medium transition-all"
+          title="Buka tampilan yang dilihat tim"
+        >
+          <i data-lucide="external-link" class="w-4 h-4 text-sky-400"></i>
+          <span class="hidden sm:inline">Lihat Layar Tim</span>
+        </a>
+
+        <!-- Admin Profile & Logout -->
+        <div class="flex items-center gap-2 pl-3 border-l border-slate-800">
+          <div class="hidden md:block text-right">
+            <div id="adminNameDisplay" class="text-xs font-semibold text-slate-200">Administrator</div>
+            <div class="text-[10px] text-emerald-400">Super Admin</div>
+          </div>
+          <button 
+            onclick="logout()" 
+            class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition-all text-xs font-medium flex items-center gap-1.5"
+            title="Keluar"
+          >
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Keluar</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+
+    <!-- Top Grid: Control Panel (Left) & Real-time Live Preview (Right) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT: Setting Status Indikator (8 cols on large screens) -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <div class="glass-panel p-6 sm:p-7 rounded-3xl border border-slate-800 shadow-2xl">
+          <div class="flex items-center justify-between mb-5">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="power" class="w-5 h-5 text-emerald-400"></i>
+                <span>Pengaturan Status Indikator</span>
+              </h2>
+              <p class="text-xs text-slate-400 mt-0.5">Pilih warna status yang akan langsung ditampilkan pada layar anggota tim</p>
+            </div>
+          </div>
+
+          <!-- Switcher Buttons: Aman (Hijau) vs Tidak Aman (Merah) -->
+          <div class="space-y-2 mb-6">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              Pilih Status:
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Tombol Aman (Hijau) -->
+              <button 
+                type="button" 
+                id="btnSetSafe"
+                class="py-4 px-6 rounded-2xl border-2 border-emerald-500 bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 transition-all scale-[1.02] ring-2 ring-emerald-400"
+              >
+                <div class="w-4 h-4 rounded-full bg-emerald-400 shadow-md shadow-emerald-400/50"></div>
+                <div class="text-left">
+                  <div class="text-base tracking-wide">AMAN</div>
+                  <div class="text-[11px] font-normal text-emerald-200/80">Kode Warna Hijau</div>
+                </div>
+              </button>
+
+              <!-- Tombol Tidak Aman (Merah) -->
+              <button 
+                type="button" 
+                id="btnSetDanger"
+                class="py-4 px-6 rounded-2xl border border-slate-700 bg-slate-900/60 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 font-semibold flex items-center justify-center gap-3 transition-all"
+              >
+                <div class="w-4 h-4 rounded-full bg-rose-500 shadow-md shadow-rose-500/50"></div>
+                <div class="text-left">
+                  <div class="text-base tracking-wide">TIDAK AMAN</div>
+                  <div class="text-[11px] font-normal text-slate-400">Kode Warna Merah</div>
+                </div>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Form Keterangan / Catatan -->
+          <div class="space-y-3 mb-6">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400" for="statusNoteInput">
+              Keterangan / Catatan untuk Tim
+            </label>
+            <textarea 
+              id="statusNoteInput" 
+              rows="3"
+              placeholder="Contoh: Semua sistem terpantau normal dan kondusif..."
+              class="w-full p-3.5 rounded-2xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+            ></textarea>
+
+            <!-- Quick Preset Notes Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="text-[11px] text-slate-500 font-medium">Catatan Cepat:</span>
+              <button 
+                type="button"
+                onclick="setQuickNote('Semua sistem dan operasional terpantau normal dan kondusif.')"
+                class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 transition-all"
+              >
+                🟢 Normal &amp; Kondusif
+              </button>
+              <button 
+                type="button"
+                onclick="setQuickNote('Perhatian: Harap berhati-hati dan tingkatkan kewaspadaan.')"
+                class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 transition-all"
+              >
+                ⚠️ Peringatan Waspada
+              </button>
+              <button 
+                type="button"
+                onclick="setQuickNote('BAHAYA: Kondisi tidak aman terdeteksi! Segera lakukan prosedur tanggap darurat.')"
+                class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 transition-all"
+              >
+                🔴 Kondisi Bahaya!
+              </button>
+            </div>
+          </div>
+
+          <!-- Tombol Terapkan & Siarkan -->
+          <button 
+            type="button" 
+            id="btnSaveStatus"
+            class="w-full py-4 px-6 rounded-2xl font-bold text-sm text-slate-950 bg-emerald-400 hover:bg-emerald-300 active:scale-[0.99] transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2.5"
+          >
+            <i data-lucide="radio" class="w-5 h-5"></i>
+            <span>Terapkan &amp; Siarkan Status Sekarang</span>
+          </button>
+
+          <!-- Feedback alert -->
+          <div id="saveMessage" class="hidden"></div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Live Screen Preview (5 cols on large screens) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <div class="glass-panel p-6 rounded-3xl border border-slate-800 shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+          
+          <div class="w-full flex items-center justify-between pb-4 mb-4 border-b border-slate-800 text-xs">
+            <span class="text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="tv" class="w-4 h-4 text-sky-400"></i>
+              <span>Pratinjau Layar Tim</span>
+            </span>
+            <span class="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              Live Sync
+            </span>
+          </div>
+
+          <!-- Preview Badge -->
+          <div id="previewBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-semibold mb-4">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            KODE HIJAU
+          </div>
+
+          <!-- Preview Orb -->
+          <div class="my-3">
+            <div id="previewOrb" class="w-24 h-24 rounded-full glow-green flex items-center justify-center relative shadow-lg">
+              <i data-lucide="shield-check" class="w-12 h-12 text-emerald-950/80"></i>
+            </div>
+          </div>
+
+          <!-- Preview Title -->
+          <div id="previewTitle" class="text-2xl font-black text-emerald-400 mt-2">
+            AMAN
+          </div>
+
+          <!-- Preview Note -->
+          <div class="w-full mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 text-left">
+            <div class="text-[10px] text-slate-500 uppercase font-semibold mb-0.5">Keterangan:</div>
+            <p id="previewNote" class="text-xs text-slate-300 line-clamp-3">
+              Memuat keterangan...
+            </p>
+          </div>
+
+          <!-- Updated time -->
+          <div class="w-full text-right mt-3 text-[11px] text-slate-500">
+            Terakhir diubah: <span id="previewUpdated" class="text-slate-400 font-medium">-</span>
+          </div>
+
+        </div>
+
+        <!-- Info IP Jaringan untuk Dibagikan ke Tim -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-800 text-xs space-y-2">
+          <div class="font-bold text-white flex items-center gap-2">
+            <i data-lucide="share-2" class="w-4 h-4 text-emerald-400"></i>
+            <span>Cara Akses untuk Tim</span>
+          </div>
+          <p class="text-slate-400">
+            Berikan alamat IP komputer ini kepada anggota tim yang terhubung ke Wi-Fi / jaringan yang sama agar mereka bisa login dan memantau status secara langsung di HP/laptop masing-masing.
+          </p>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] text-emerald-300 select-all">
+            Lihat IP di konsol terminal tempat server dijalankan (misal: http://192.168.x.x:3000)
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Grid: Riwayat Perubahan & Manajemen Pengguna -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- History Table (8 cols) -->
+      <div class="lg:col-span-8 glass-panel p-6 rounded-3xl border border-slate-800 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <i data-lucide="history" class="w-5 h-5 text-sky-400"></i>
+            <h3 class="font-bold text-white text-base">Riwayat Perubahan Status</h3>
+          </div>
+          <button 
+            type="button" 
+            onclick="loadHistory()" 
+            class="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+          >
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Segarkan</span>
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
+                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3">Keterangan</th>
+                <th class="py-2.5 px-3">Diubah Oleh</th>
+                <th class="py-2.5 px-3">Waktu</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody" class="divide-y divide-slate-800/40">
+              <tr>
+                <td colspan="4" class="py-4 text-center text-slate-500 text-xs">Memuat data riwayat...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- User Management (4 cols) -->
+      <div class="lg:col-span-4 glass-panel p-6 rounded-3xl border border-slate-800 shadow-xl space-y-5">
+        <div class="flex items-center gap-2">
+          <i data-lucide="users" class="w-5 h-5 text-amber-400"></i>
+          <h3 class="font-bold text-white text-base">Manajemen Pengguna</h3>
+        </div>
+
+        <!-- Daftar User yang Ada -->
+        <div class="space-y-2">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pengguna Terdaftar:</div>
+          <div id="userListBody" class="space-y-2 max-h-44 overflow-y-auto pr-1">
+            <div class="text-xs text-slate-500">Memuat daftar user...</div>
+          </div>
+        </div>
+
+        <!-- Form Tambah User Baru -->
+        <div class="pt-4 border-t border-slate-800">
+          <div class="text-xs font-semibold text-slate-300 mb-3 flex items-center gap-1.5">
+            <i data-lucide="user-plus" class="w-4 h-4 text-emerald-400"></i>
+            <span>Tambah Akun Baru</span>
+          </div>
+
+          <div id="addUserMsg" class="hidden"></div>
+
+          <form id="addUserForm" class="space-y-3">
+            <div>
+              <input 
+                type="text" 
+                id="newUserName" 
+                placeholder="Nama Lengkap / Nama Tim" 
+                required
+                class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              >
+            </div>
+            <div>
+              <input 
+                type="text" 
+                id="newUserUsername" 
+                placeholder="Username login" 
+                required
+                class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              >
+            </div>
+            <div>
+              <input 
+                type="password" 
+                id="newUserPassword" 
+                placeholder="Password" 
+                required
+                class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              >
+            </div>
+            <div>
+              <select 
+                id="newUserRole" 
+                class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-emerald-500"
+              >
+                <option value="user">Role: User / Viewer (Hanya melihat warna)</option>
+                <option value="admin">Role: Admin (Bisa ganti status)</option>
+              </select>
+            </div>
+            <button 
+              type="submit" 
+              class="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-slate-950 bg-emerald-400 hover:bg-emerald-300 transition-all shadow-md shadow-emerald-500/10 flex items-center justify-center gap-1.5"
+            >
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              <span>Daftarkan Akun</span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="py-4 px-6 text-center text-xs text-slate-500 border-t border-slate-900 glass-panel-subtle">
+    Sistem Status Indikator Tim &copy; 2026 &bull; Panel Administrator
+  </footer>
+
+  <script src="/js/sound.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

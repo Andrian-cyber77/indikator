@@ -1,0 +1,46 @@
+{
+  "status": {
+    "code": "AMAN",
+    "color": "green",
+    "title": "AMAN",
+    "note": "Sistem operasional terpantau normal dan kondusif.",
+    "updatedBy": "Administrator",
+    "updatedAt": "2026-10-26T05:38:12.305Z"
+  },
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "passwordHash": "f476c8f6701db743238b758262684da7c30f592693972850aa5ad511b6337e99",
+      "role": "admin",
+      "name": "Administrator"
+    },
+    {
+      "id": "2",
+      "username": "user",
+      "passwordHash": "975adcd94c4c669b03d25843c9ddfc7787449c63467cfd7e327e46a781b0b56e",
+      "role": "user",
+      "name": "Anggota Tim"
+    }
+  ],
+  "history": [
+    {
+      "code": "AMAN",
+      "note": "Sistem operasional terpantau normal dan kondusif.",
+      "updatedBy": "Administrator",
+      "timestamp": "2026-10-26T05:38:12.305Z"
+    },
+    {
+      "code": "TIDAK_AMAN",
+      "note": "Peringatan: Jalur produksi 2 berhenti.",
+      "updatedBy": "Administrator",
+      "timestamp": "2026-10-26T05:37:27.851Z"
+    },
+    {
+      "code": "AMAN",
+      "note": "Inisialisasi sistem",
+      "updatedBy": "System",
+      "timestamp": "2026-10-26T05:34:10.046Z"
+    }
+  ]
+}

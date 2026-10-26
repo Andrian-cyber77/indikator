@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Kode Indikator Tim</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden font-sans">
+  
+  <!-- Background Glow Accents -->
+  <div class="absolute top-1/4 -left-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="w-full max-w-md relative z-10">
+    <!-- Header Brand -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl mb-4 relative">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50 flex items-center justify-center">
+          <i data-lucide="activity" class="w-5 h-5 text-slate-950"></i>
+        </div>
+      </div>
+      <h1 class="text-2xl font-bold tracking-tight text-white">Status Indikator Tim</h1>
+      <p class="text-slate-400 text-sm mt-1">Sistem Pemantauan Status Aman &amp; Tidak Aman</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-800/80">
+      
+      <!-- Alert Pesan Error -->
+      <div id="errorBox" class="hidden mb-5 p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-sm flex items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+        <span id="errorMessage">Username atau password salah.</span>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5" for="username">Username</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-500">
+              <i data-lucide="user" class="w-4 h-4"></i>
+            </span>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              required
+              autocomplete="username"
+              placeholder="Masukkan username"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5" for="password">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-500">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </span>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              required
+              autocomplete="current-password"
+              placeholder="Masukkan password"
+              class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+            >
+            <button 
+              type="button" 
+              id="togglePassword" 
+              class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-500 hover:text-slate-300 focus:outline-none"
+            >
+              <i data-lucide="eye" id="eyeIcon" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          id="btnLogin"
+          class="w-full py-3 px-4 rounded-xl font-medium text-sm text-slate-950 bg-emerald-400 hover:bg-emerald-300 active:scale-[0.99] transition-all shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 mt-2 font-semibold"
+        >
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Masuk ke Sistem</span>
+        </button>
+      </form>
+
+      <!-- Quick Preset Demo Accounts -->
+      <div class="mt-6 pt-5 border-t border-slate-800/80">
+        <p class="text-xs text-slate-400 mb-2 font-medium">Klik untuk isi otomatis akun bawaan:</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            type="button" 
+            onclick="fillCredentials('admin', 'admin123')"
+            class="text-left p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 transition-all text-xs"
+          >
+            <div class="flex items-center gap-1.5 font-semibold text-emerald-400 mb-0.5">
+              <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+              <span>Admin</span>
+            </div>
+            <div class="text-[11px] text-slate-400">Set Aman / Tidak Aman</div>
+          </button>
+
+          <button 
+            type="button" 
+            onclick="fillCredentials('user', 'user123')"
+            class="text-left p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 transition-all text-xs"
+          >
+            <div class="flex items-center gap-1.5 font-semibold text-sky-400 mb-0.5">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              <span>User / Tim</span>
+            </div>
+            <div class="text-[11px] text-slate-400">Hanya melihat warna</div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer info -->
+    <p class="text-center text-xs text-slate-600 mt-6">
+      Sistem Indikator Tim &copy; 2026 &bull; Realtime WebSocket / SSE
+    </p>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script>
+    lucide.createIcons();
+
+    // Cek jika sudah login
+    checkAuth();
+
+    // Toggle lihat password
+    const pwdInput = document.getElementById('password');
+    const toggleBtn = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    toggleBtn.addEventListener('click', () => {
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        eyeIcon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        pwdInput.type = 'password';
+        eyeIcon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    });
+
+    // Helper isi credential cepat
+    function fillCredentials(u, p) {
+      document.getElementById('username').value = u;
+      document.getElementById('password').value = p;
+      document.getElementById('errorBox').classList.add('hidden');
+    }
+
+    // Submit form login
+    const loginForm = document.getElementById('loginForm');
+    const errorBox = document.getElementById('errorBox');
+    const errorMessage = document.getElementById('errorMessage');
+    const btnLogin = document.getElementById('btnLogin');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.add('hidden');
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Memeriksa...</span>`;
+      lucide.createIcons();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Login gagal.');
+        }
+
+        // Arahkan sesuai role
+        if (data.user.role === 'admin') {
+          window.location.href = '/admin.html';
+        } else {
+          window.location.href = '/indicator.html';
+        }
+      } catch (err) {
+        errorBox.classList.remove('hidden');
+        errorMessage.innerText = err.message;
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = `<i data-lucide="log-in" class="w-4 h-4"></i><span>Masuk ke Sistem</span>`;
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

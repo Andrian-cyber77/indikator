@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indikator Status Tim - Pemantauan Warna</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body id="mainBody" class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden select-none font-sans">
+
+  <!-- Ambient Dynamic Colored Glow -->
+  <div id="ambientGlow" class="absolute inset-0 ambient-bg-green transition-status duration-1000 pointer-events-none"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="relative z-20 px-4 sm:px-8 py-4 flex items-center justify-between border-b border-slate-800/60 glass-panel">
+    
+    <!-- Brand / Live indicator -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/60 shadow">
+        <span id="liveDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span id="liveStatusText" class="text-[11px] font-semibold text-emerald-400 tracking-wider">TERHUBUNG REAL-TIME</span>
+      </div>
+      <span class="hidden sm:inline-block text-xs text-slate-400 font-medium border-l border-slate-700 pl-3">
+        Monitor Indikator Tim
+      </span>
+    </div>
+
+    <!-- Right Controls: Sound, Fullscreen, User Info & Logout -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      
+      <!-- Audio toggle -->
+      <button 
+        id="soundToggleBtn" 
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/70 hover:bg-slate-800 border border-slate-700/60 text-slate-300 text-xs font-medium transition-all"
+        title="Nyalakan / Matikan Bunyi Alarm"
+      >
+        <i data-lucide="volume-2" id="soundIcon" class="w-4 h-4 text-emerald-400"></i>
+        <span id="soundLabel" class="hidden md:inline">Suara Aktif</span>
+      </button>
+
+      <!-- Fullscreen button -->
+      <button 
+        id="fullscreenBtn" 
+        class="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900/70 hover:bg-slate-800 border border-slate-700/60 text-slate-300 text-xs font-medium transition-all flex items-center gap-1.5"
+        title="Tampilan Layar Penuh (TV Mode)"
+      >
+        <i data-lucide="maximize" class="w-4 h-4 text-sky-400"></i>
+        <span class="hidden md:inline">Layar Penuh</span>
+      </button>
+
+      <!-- Profile & Logout -->
+      <div class="flex items-center gap-2 pl-2 border-l border-slate-800">
+        <div class="hidden sm:block text-right">
+          <div id="userNameDisplay" class="text-xs font-semibold text-slate-200">-</div>
+          <div id="userRoleDisplay" class="text-[10px] text-slate-400">Anggota Tim</div>
+        </div>
+        <button 
+          onclick="logout()" 
+          class="p-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 transition-all text-xs font-medium flex items-center gap-1.5"
+          title="Keluar dari akun"
+        >
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Keluar</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Center Content: The Big Indicator -->
+  <main class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 py-8 text-center my-auto">
+    
+    <!-- Status Badge -->
+    <div id="statusBadge" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-semibold text-sm tracking-widest uppercase shadow-lg shadow-emerald-500/10 mb-4 transition-all duration-500">
+      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span>KONDISI KODE HIJAU</span>
+    </div>
+
+    <!-- The Glowing Color Orb -->
+    <div class="relative my-6 sm:my-8 flex items-center justify-center">
+      <div id="radarRing" class="radar-ring radar-ring-green"></div>
+      
+      <div id="indicatorOrb" class="w-48 h-48 sm:w-64 sm:h-64 rounded-full glow-green flex items-center justify-center transition-all duration-700 shadow-2xl relative">
+        <div id="statusIconInsideOrb" class="relative z-10 flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-24 h-24 sm:w-32 sm:h-32 text-emerald-950/80 drop-shadow"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Text Heading -->
+    <h1 id="statusText" class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-emerald-400 drop-shadow-[0_0_35px_rgba(52,211,153,0.4)] transition-all duration-500">
+      AMAN
+    </h1>
+
+    <!-- Note & Explanation Card -->
+    <div class="mt-8 w-full max-w-xl">
+      <div id="noteCard" class="glass-panel p-5 sm:p-6 rounded-2xl border-l-4 border-l-emerald-500 border-t border-r border-b border-slate-800/80 max-w-xl mx-auto shadow-xl transition-all duration-500">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1 flex items-center justify-center gap-1.5">
+          <i data-lucide="info" class="w-3.5 h-3.5"></i>
+          <span>Keterangan Status</span>
+        </div>
+        <p id="statusNote" class="text-base sm:text-lg text-slate-200 font-medium">
+          Memuat status terkini...
+        </p>
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span id="lastUpdatedTime">-</span>
+          <span id="updatedByEl" class="italic"></span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer Info -->
+  <footer class="relative z-20 py-3 px-6 text-center text-xs text-slate-500 border-t border-slate-900/80 glass-panel-subtle flex flex-col sm:flex-row items-center justify-between gap-2">
+    <div>
+      Status diperbarui secara langsung (real-time). Anda tidak perlu me-refresh halaman.
+    </div>
+    <div class="text-slate-500 flex items-center gap-3">
+      <span>Kode Hijau = Aman</span>
+      <span>&bull;</span>
+      <span>Kode Merah = Tidak Aman</span>
+    </div>
+  </footer>
+
+  <script src="/js/sound.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/viewer.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
